@@ -1,0 +1,10 @@
+{"code": "import hashlib\nh = hashlib.md5(data).hexdigest()\n", "line": 2, "expected_verdict": "FLAG", "cwe": "CWE-328", "lang": "python"}
+{"code": "import hashlib\nd = hashlib.sha1(payload).digest()\n", "line": 2, "expected_verdict": "FLAG", "cwe": "CWE-328", "lang": "python"}
+{"code": "import hashlib\nx = hashlib.new('md5')\n", "line": 2, "expected_verdict": "FLAG", "cwe": "CWE-328", "lang": "python"}
+{"code": "from hashlib import md5\nv = md5(b'x').hexdigest()\n", "line": 2, "expected_verdict": "FLAG", "cwe": "CWE-328", "lang": "python"}
+{"code": "import hashlib\nsig = hashlib.md5(token.encode()).hexdigest()\n", "line": 2, "expected_verdict": "FLAG", "cwe": "CWE-328", "lang": "python"}
+{"code": "import hashlib\nh = hashlib.sha256(data).hexdigest()\n", "line": 2, "expected_verdict": "SAFE", "cwe": "CWE-328", "lang": "python"}
+{"code": "import hashlib\nh = hashlib.blake2b(data).hexdigest()\n", "line": 2, "expected_verdict": "SAFE", "cwe": "CWE-328", "lang": "python"}
+{"code": "import hashlib\nh = hashlib.md5(data, usedforsecurity=False).hexdigest()\n", "line": 2, "expected_verdict": "SAFE", "cwe": "CWE-328", "lang": "python"}
+{"code": "import hashlib\nh = hashlib.new('sha256')\n", "line": 2, "expected_verdict": "SAFE", "cwe": "CWE-328", "lang": "python"}
+{"code": "import hashlib\nh = hashlib.sha512(data).digest()\n", "line": 2, "expected_verdict": "SAFE", "cwe": "CWE-328", "lang": "python"}
