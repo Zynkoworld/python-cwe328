@@ -6,14 +6,14 @@ An **oracle** *deterministically decides* the truth of a case — it doesn't gue
 for a given piece of Python code and a line number, whether that line constitutes **weak hash primitive (MD5/SHA1)** (CWE-328).
 
 ## Proven
-Measured on a **discriminating** probe corpus of **19 cases (10 flagged + 9 safe)** — verified by
+Measured on a **discriminating** probe corpus of **24 cases (13 flagged + 11 safe)** — verified by
 running the oracle, not asserted:
 
 ```
 recall = 1.000    false_positives = 0    non-degenerate = yes  ->  PASS
 ```
 
-These numbers hold **on the published probe set (N=19)**. A probe set is a floor, not a
+These numbers hold **on the published probe set (N=24)**. A probe set is a floor, not a
 coverage measure — see *Known limitations* below.
 
 `verify.py` (stdlib only, no network) is the CI gate.
@@ -44,6 +44,12 @@ What it still cannot see:
 
 `SAFE` therefore means *"the stated syntactic condition was not established here"*, not *"this code is
 secure"*. The corpus below is a floor on the decider's behaviour, not a measure of its coverage.
+
+Those limitations are **concrete and re-checkable**, not a disclaimer: `probes/known_limitations.jsonl`
+lists the exact forms this decider does not see, each with its current verdict and the reason. That file
+is deliberately **not** part of the `verify.py` gate — labelling those cases `SAFE` in the gate corpus
+would hide the gap instead of recording it. If a later version closes one of them, the change is visible
+there.
 
 ## License
 Apache-2.0 (see `LICENSE`).

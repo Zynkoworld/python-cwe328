@@ -83,7 +83,12 @@ def _origin(call, binds, local):
 
 
 def _const_strs(tree):
-    """modul-szintu `NEV = "literal"` / `NEV = b"literal"` konstansok (konstans-propagacio)."""
+    """Egyszeru `NEV = <string/bytes literal>` ertekadasok BARHOL a fajlban.
+
+    FONTOS es szandekosan kimondva: ez NEM scope-erzekeny -- egy fuggvenyen BELULI ertekadas is
+    bekerul, es igy egy masik fuggvenyben szereplo AZONOS NEVU valtozora is ervenyesnek latszik.
+    Ez tudatos TUL-KOZELITES a rejtett literal fele; az arat a known_limitations.jsonl rogziti.
+    """
     out = {}
     for n in ast.walk(tree):
         if isinstance(n, ast.Assign) and isinstance(n.value, ast.Constant) \
@@ -117,9 +122,15 @@ def decide(code, line):
         if origin in _WEAK_HASHLIB:
             hit = True
         elif origin == "hashlib.new":
+            consts = _const_strs(tree)
             for a in node.args:
-                if isinstance(a, ast.Constant) and isinstance(a.value, str) \
-                        and a.value.lower() in _WEAK_ALGO:
+                v = None
+                if isinstance(a, ast.Constant) and isinstance(a.value, str):
+                    v = a.value
+                elif isinstance(a, ast.Name) and a.id in consts:      # a = "md5"; hashlib.new(a)
+                    c = consts[a.id]
+                    v = c.decode("utf-8", "replace") if isinstance(c, bytes) else c
+                if v is not None and v.lower() in _WEAK_ALGO:
                     hit = True
         elif origin.startswith(_CRYPTO_ROOTS) and origin.endswith(".new"):
             if origin.split(".")[-2].lower() in _WEAK_ALGO:

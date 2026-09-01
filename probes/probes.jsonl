@@ -17,3 +17,8 @@
 {"code": "class P:\n    def sha(self, x):\n        return x\np = P()\nv = p.sha(1)\n", "line": 5, "expected_verdict": "SAFE", "cwe": "CWE-328", "lang": "python", "origin": "adversarial (zafire #19219 review: binding vs name)"}
 {"code": "import hashlib\nf = hashlib.sha256\nv = f(data)\n", "line": 3, "expected_verdict": "SAFE", "cwe": "CWE-328", "lang": "python", "origin": "adversarial (zafire #19219 review: binding vs name)"}
 {"code": "import hashlib\nv = getattr(hashlib, 'sha256')(data)\n", "line": 2, "expected_verdict": "SAFE", "cwe": "CWE-328", "lang": "python", "origin": "adversarial (zafire #19219 review: binding vs name)"}
+{"code": "import hashlib\na = 'md5'\nh = hashlib.new(a)\n", "line": 3, "expected_verdict": "FLAG", "cwe": "CWE-328", "lang": "python", "origin": "adversarial (zafire #19241 re-measure: constant propagation)"}
+{"code": "import hashlib\nALGO = 'sha1'\nh = hashlib.new(ALGO)\n", "line": 3, "expected_verdict": "FLAG", "cwe": "CWE-328", "lang": "python", "origin": "adversarial (zafire #19241 re-measure: constant propagation)"}
+{"code": "import hashlib\nALGO = 'sha256'\nh = hashlib.new(ALGO)\n", "line": 3, "expected_verdict": "SAFE", "cwe": "CWE-328", "lang": "python", "origin": "adversarial (zafire #19241 re-measure: constant propagation)"}
+{"code": "import mymod as hashlib\nh = hashlib.md5(data)\n", "line": 2, "expected_verdict": "SAFE", "cwe": "CWE-328", "lang": "python", "origin": "adversarial (zafire #19241 re-measure: constant propagation)"}
+{"code": "import hashlib\nm = hashlib\nh = m.md5(data)\n", "line": 3, "expected_verdict": "FLAG", "cwe": "CWE-328", "lang": "python", "origin": "adversarial (zafire #19241 re-measure: constant propagation)"}
