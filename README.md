@@ -6,14 +6,14 @@ An **oracle** *deterministically decides* the truth of a case — it doesn't gue
 for a given piece of Python code and a line number, whether that line constitutes **weak hash primitive (MD5/SHA1)** (CWE-328).
 
 ## Proven
-Measured on a **discriminating** probe corpus of **36 cases (18 flagged + 18 safe)** — verified by
+Measured on a **discriminating** probe corpus of **40 cases (20 flagged + 20 safe)** — verified by
 running the oracle, not asserted:
 
 ```
 recall = 1.000    false_positives = 0    non-degenerate = yes  ->  PASS
 ```
 
-These numbers hold **on the published probe set (N=36)**. A probe set is a floor, not a
+These numbers hold **on the published probe set (N=40)**. A probe set is a floor, not a
 coverage measure — see *Known limitations* below.
 
 `verify.py` (stdlib only, no network) is the CI gate.
@@ -50,6 +50,21 @@ lists the exact forms this decider does not see, each with its current verdict a
 is deliberately **not** part of the `verify.py` gate — labelling those cases `SAFE` in the gate corpus
 would hide the gap instead of recording it. If a later version closes one of them, the change is visible
 there.
+
+## Scope of constant folding (declared)
+The decider follows a constant through **literal concatenation** (including multi-step), **adjacent
+string literals**, **constant-only f-strings**, and **case conversion** (`.upper()` / `.lower()`). Case
+conversion is inside the line because the algorithm comparison is already case-insensitive — leaving it
+out would be inconsistent rather than conservative.
+
+Every other way of deriving a constant — `%`-formatting, `.format()`, `''.join([...])`, indexing,
+unpacking, other string methods — and a **conditional name** (`x if c else y`) are outside that scope and
+are listed in `probes/known_limitations.jsonl`.
+
+The boundary is set by **declaration, not by adding evaluator branches**. Four rounds of adversarial
+review closed progressively more exotic forms at zero false positives; past this point each additional
+branch is one more place to be wrong, for a shrinking return. A reader who needs a form beyond this line
+can see exactly which one, and re-check it.
 
 ## License
 Apache-2.0 (see `LICENSE`).
