@@ -6,14 +6,14 @@ An **oracle** *deterministically decides* the truth of a case — it doesn't gue
 for a given piece of Python code and a line number, whether that line constitutes **weak hash primitive (MD5/SHA1)** (CWE-328).
 
 ## Proven
-Measured on a **discriminating** probe corpus of **29 cases (14 flagged + 15 safe)** — verified by
+Measured on a **discriminating** probe corpus of **36 cases (18 flagged + 18 safe)** — verified by
 running the oracle, not asserted:
 
 ```
 recall = 1.000    false_positives = 0    non-degenerate = yes  ->  PASS
 ```
 
-These numbers hold **on the published probe set (N=29)**. A probe set is a floor, not a
+These numbers hold **on the published probe set (N=36)**. A probe set is a floor, not a
 coverage measure — see *Known limitations* below.
 
 `verify.py` (stdlib only, no network) is the CI gate.
