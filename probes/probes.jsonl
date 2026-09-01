@@ -8,3 +8,12 @@
 {"code": "import hashlib\nh = hashlib.md5(data, usedforsecurity=False).hexdigest()\n", "line": 2, "expected_verdict": "SAFE", "cwe": "CWE-328", "lang": "python"}
 {"code": "import hashlib\nh = hashlib.new('sha256')\n", "line": 2, "expected_verdict": "SAFE", "cwe": "CWE-328", "lang": "python"}
 {"code": "import hashlib\nh = hashlib.sha512(data).digest()\n", "line": 2, "expected_verdict": "SAFE", "cwe": "CWE-328", "lang": "python"}
+{"code": "import hashlib\nfrom hashlib import md5 as h\nv = h(data)\n", "line": 3, "expected_verdict": "FLAG", "cwe": "CWE-328", "lang": "python", "origin": "adversarial (zafire #19219 review: binding vs name)"}
+{"code": "import hashlib\nf = hashlib.md5\nv = f(data)\n", "line": 3, "expected_verdict": "FLAG", "cwe": "CWE-328", "lang": "python", "origin": "adversarial (zafire #19219 review: binding vs name)"}
+{"code": "import hashlib\nv = getattr(hashlib, 'md5')(data)\n", "line": 2, "expected_verdict": "FLAG", "cwe": "CWE-328", "lang": "python", "origin": "adversarial (zafire #19219 review: binding vs name)"}
+{"code": "import hashlib as hl\nv = hl.sha1(data)\n", "line": 2, "expected_verdict": "FLAG", "cwe": "CWE-328", "lang": "python", "origin": "adversarial (zafire #19219 review: binding vs name)"}
+{"code": "from Crypto.Hash import MD5\nh = MD5.new(data)\n", "line": 2, "expected_verdict": "FLAG", "cwe": "CWE-328", "lang": "python", "origin": "adversarial (zafire #19219 review: binding vs name)"}
+{"code": "def md5(x):\n    return x + 1\nv = md5(3)\n", "line": 3, "expected_verdict": "SAFE", "cwe": "CWE-328", "lang": "python", "origin": "adversarial (zafire #19219 review: binding vs name)"}
+{"code": "class P:\n    def sha(self, x):\n        return x\np = P()\nv = p.sha(1)\n", "line": 5, "expected_verdict": "SAFE", "cwe": "CWE-328", "lang": "python", "origin": "adversarial (zafire #19219 review: binding vs name)"}
+{"code": "import hashlib\nf = hashlib.sha256\nv = f(data)\n", "line": 3, "expected_verdict": "SAFE", "cwe": "CWE-328", "lang": "python", "origin": "adversarial (zafire #19219 review: binding vs name)"}
+{"code": "import hashlib\nv = getattr(hashlib, 'sha256')(data)\n", "line": 2, "expected_verdict": "SAFE", "cwe": "CWE-328", "lang": "python", "origin": "adversarial (zafire #19219 review: binding vs name)"}
